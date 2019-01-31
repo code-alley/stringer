@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.1.xsd
+		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<bean id="jacksonMessageConverter" class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter"/>
+		
+	<context:component-scan base-package="com.inslab.mybatis" />
+    
+	<bean id="dataSource"
+        class="org.springframework.jdbc.datasource.SimpleDriverDataSource">
+        <property name="driverClass" value="com.mysql.jdbc.Driver"></property>
+        <property name="url" value="jdbc:mysql://HOST:PORT/powerdns"></property>
+        <property name="username" value="USERNAME"></property>
+        <property name="password" value="PASSWORD"></property>
+    </bean>
+    
+    <bean id="sqlSessionFactory"
+        class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"></property>
+        
+        <property name="typeAliasesPackage" value="com.inslab.mybatis" />
+        <property name="mapperLocations"
+            value="classpath:com/inslab/mybatis/*.xml">
+         <!-- 
+         <property name="configLocation"
+            value="classpath:mybatis/mybatis-config.xml">
+             -->
+        </property>
+    </bean>
+   
+    <bean id="transactionManager"
+        class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+   
+    <bean id="sqlSession"
+        class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg  ref="sqlSessionFactory"></constructor-arg>
+    </bean>
+	
+</beans>

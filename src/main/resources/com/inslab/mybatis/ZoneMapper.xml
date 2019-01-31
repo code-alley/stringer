@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.inslab.mybatis.ZoneMapper">
+    
+    <resultMap type="Zone" id="ZoneResultMap">
+        <result property="id" 				column="id"/>
+        <result property="name" 			column="name"/>
+        <result property="master" 			column="master"/>
+        <result property="last_check" 		column="last_check"/>
+        <result property="type" 			column="type"/>
+        <result property="notified_serial" 	column="notified_serial"/>
+        <result property="account" 			column="account"/>
+    </resultMap>
+    
+    <select id ="getZones" resultMap="ZoneResultMap">
+        select *
+        from domains;
+    </select >
+    
+    <select id ="getZone" resultMap="ZoneResultMap" parameterType="com.inslab.mybatis.Zone">
+        select *
+        from domains where(name=#{name}) ;
+    </select >
+    
+    <insert id="insertZone" parameterType="com.inslab.mybatis.Zone" >
+		INSERT INTO domains (name, type) values (#{name},#{type})
+	</insert>
+    
+    <!-- 
+    INSERT INTO domains values(#{name},#{master},#{last_check},#{type},#{notified_serial},#{account})
+    
+    <select id ="selectSample" parameterType="java.util.HashMap" resultType= "java.util.HashMap">
+        select *
+        from records;
+       
+    </select >
+    
+    parameterType 에는 구문에 전달될 파라미터의 패키지 경로를 포함한 전체 클래명이나 별칭이 들어간다 
+	<insert id="insertMember" parameterType="com.test.mybatis.Member" >
+		INSERT INTO tab_mybatis values(#{_name},#{_email},#{_phone})
+	</insert>
+	
+	
+	<delete id="deleteMember" parameterType="com.test.mybatis.Member">
+		DELTE tab_mybatis WHERE(name=#{_name})
+	</delete>
+     -->
+    
+</mapper>

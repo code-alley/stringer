@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace= "com.inslab.mybatis.RecordMapper" >
+    
+    <resultMap type="Record" id="RecordResultMap">
+        <result property="domain_id" column="domain_id"/>
+        <result property="name" column="name"/>
+        <result property="type" column="type"/>
+        <result property="content" column="content"/>
+        <result property="ttl" column="ttl"/>
+        <result property="prio" column="prio"/>
+        <result property="change_date" column="change_date"/>
+    </resultMap>
+    
+    <select id ="getRecords" resultMap="RecordResultMap">
+        select *
+        from records;
+    </select >
+    
+    <select id ="getRecord" parameterType="com.inslab.mybatis.Record" resultMap="RecordResultMap">
+        select *
+        from records where (domain_id=#{domain_id});
+    </select >
+    
+    <select id ="getRecordForId" parameterType="com.inslab.mybatis.Record" resultMap="RecordResultMap">
+        select * from records where name=#{name};
+    </select >
+    
+    <insert id="insertRecord" parameterType="com.inslab.mybatis.Record" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO 
+		records (domain_id, name, type, content, ttl, prio) 
+		values 
+		(#{domain_id},#{name},#{type},#{content},#{ttl},#{prio})
+	</insert>
+	
+    
+    <update id="updateRecord" parameterType="com.inslab.mybatis.Record">
+        update records set content=#{content} where name = #{name}
+    </update>
+    
+    <delete id="deleteRecord" parameterType="com.inslab.mybatis.Record">
+        delete from records where name=#{name}
+    </delete>
+    
+    <!-- 
+    select * from records where domain_id=#{domain_id} and name LIKE CONCAT('%',#{name},'.%');
+    
+    <select id ="selectSample" parameterType="java.util.HashMap" resultType= "java.util.HashMap">
+        select *
+        from records;
+       
+    </select >
+     -->
+    
+</mapper>
